@@ -185,7 +185,7 @@ use base qw(Has::Version);
 
 package main;
 
-our $eval1 = q{
+my $eval1 = q{
   {
     package Eval1;
     {

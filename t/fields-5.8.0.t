@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-$SIG{__WARN__} = sub { return if $_[0] =~ /^Pseudo-hashes are deprecated/ };
-
 # We skip this on 5.9.0 and up since pseudohashes were removed and a lot of
 # it won't work.
 if( $] >= 5.009 ) { 
@@ -76,6 +74,10 @@ use fields qw(b1 d1 _b1 _d1);  # hide b1
 package main;
 
 sub fstr {
+    local $SIG{__WARN__} = sub { 
+        return if $_[0] =~ /^Pseudo-hashes are deprecated/ 
+    };
+
    my $h = shift;
    my @tmp;
    for my $k (sort {$h->{$a} <=> $h->{$b}} keys %$h) {
@@ -133,21 +135,27 @@ print "ok ", ++$testno, "\n";
 print "not " unless "@$obj1{'b1','_b1','b1'}" eq "28 44 28";
 print "ok ", ++$testno, "\n";
 
-my $ph = fields::phash(a => 1, b => 2, c => 3);
-print "not " unless fstr($ph) eq 'a:1,b:2,c:3';
-print "ok ", ++$testno, "\n";
+{
+    local $SIG{__WARN__} = sub { 
+        return if $_[0] =~ /^Pseudo-hashes are deprecated/ 
+    };
 
-$ph = fields::phash([qw/a b c/], [1, 2, 3]);
-print "not " unless fstr($ph) eq 'a:1,b:2,c:3';
-print "ok ", ++$testno, "\n";
+    my $ph = fields::phash(a => 1, b => 2, c => 3);
+    print "not " unless fstr($ph) eq 'a:1,b:2,c:3';
+    print "ok ", ++$testno, "\n";
 
-$ph = fields::phash([qw/a b c/], [1]);
-print "not " if exists $ph->{b} or exists $ph->{c} or !exists $ph->{a};
-print "ok ", ++$testno, "\n";
+    $ph = fields::phash([qw/a b c/], [1, 2, 3]);
+    print "not " unless fstr($ph) eq 'a:1,b:2,c:3';
+    print "ok ", ++$testno, "\n";
 
-eval '$ph = fields::phash("odd")';
-print "not " unless $@ && $@ =~ /^Odd number of/;
-print "ok ", ++$testno, "\n";
+    $ph = fields::phash([qw/a b c/], [1]);
+    print "not " if exists $ph->{b} or exists $ph->{c} or !exists $ph->{a};
+    print "ok ", ++$testno, "\n";
+
+    eval '$ph = fields::phash("odd")';
+    print "not " unless $@ && $@ =~ /^Odd number of/;
+    print "ok ", ++$testno, "\n";
+}
 
 #fields::_dump();
 
@@ -205,7 +213,7 @@ print "ok ", ++$testno ," # Has::Version\n";
 
 package main;
 
-our $eval1 = q{
+my $eval1 = q{
   {
     package Eval1;
     {

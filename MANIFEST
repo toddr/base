@@ -4,6 +4,7 @@ lib/fields.pm
 Makefile.PL
 MANIFEST
 META.yml
+t/base.t
 t/fields-5.6.0.t
 t/fields-5.8.0.t
 t/fields-base.t
