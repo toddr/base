@@ -27,6 +27,7 @@ WriteMakefile(
     NAME            => $PACKAGE,
     VERSION_FROM    => "lib/$PACKAGE_FILE.pm", # finds $VERSION
     PREREQ_PM       => {   },
+    INSTALLDIRS     => 'perl',
 );
 
 
