@@ -26,7 +26,7 @@ CHANGE_WARN
 WriteMakefile(
     NAME            => $PACKAGE,
     VERSION_FROM    => "lib/$PACKAGE_FILE.pm", # finds $VERSION
-    PREREQ_PM       => {   },
+    PREREQ_PM       => { Test::More => 0.40 },
     INSTALLDIRS     => 'perl',
 );
 

@@ -1,56 +1,17 @@
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl test.pl'
+#!/usr/bin/perl -w
 
-my $Has_PH = $] < 5.009;
+my $Has_PH;
+BEGIN {
+    $SIG{__WARN__} = sub {
+        return if $_[0] =~ /^Pseudo-hashes are deprecated/ 
+    };
+    $Has_PH = $] < 5.009;
+}
 
-$SIG{__WARN__} = sub { return if $_[0] =~ /^Pseudo-hashes are deprecated/ };
-
-######################### We start with some black magic to print on failure.
-
-# Change 1..1 below to 1..last_test_to_print .
-# (It may become useful if the test is moved to ./t subdirectory.)
 use strict;
+use Test::More tests => 16;
 
-use vars qw($Total_tests);
-
-my $loaded;
-my $test_num = 1;
-BEGIN { $| = 1; $^W = 1; }
-END {print "not ok $test_num\n" unless $loaded;}
-print "1..$Total_tests\n";
-use fields;
-$loaded = 1;
-print "ok $test_num\n";
-$test_num++;
-######################### End of black magic.
-
-# Insert your test code below (better if it prints "ok 13"
-# (correspondingly "not ok 13") depending on the success of chunk 13
-# of the test code):
-sub ok ($;$) {
-    my($test, $name) = @_;
-    print "not " unless $test;
-    print "ok $test_num";
-    print " - $name" if defined $name;
-    print "\n";
-    $test_num++;
-}
-
-sub eqarray  {
-    my($a1, $a2) = @_;
-    return 0 unless @$a1 == @$a2;
-    my $ok = 1;
-    for (0..$#{$a1}) { 
-        unless($a1->[$_] eq $a2->[$_]) {
-            $ok = 0;
-            last;
-        }
-    }
-    return $ok;
-}
-
-# Change this to your # of ok() calls + 1
-BEGIN { $Total_tests = 10 }
+BEGIN { use_ok('fields'); }
 
 
 package Foo;
@@ -63,9 +24,9 @@ sub magic_new { bless [] }  # Doesn't 100% work, perl's problem.
 
 package main;
 
-ok( eqarray( [sort keys %Foo::FIELDS], 
-             [sort qw(_no Pants who _up_yours what)] ) 
-  );
+is_deeply( [sort keys %Foo::FIELDS], 
+           [sort qw(_no Pants who _up_yours what)]
+);
 
 sub show_fields {
     my($base, $mask) = @_;
@@ -75,10 +36,10 @@ sub show_fields {
                 keys %$fields;
 }
 
-ok( eqarray( [sort &show_fields('Foo', fields::PUBLIC)],
-             [sort qw(Pants who what)]) );
-ok( eqarray( [sort &show_fields('Foo', fields::PRIVATE)],
-             [sort qw(_no _up_yours)]) );
+is_deeply( [sort &show_fields('Foo', fields::PUBLIC)],
+           [sort qw(Pants who what)]);
+is_deeply( [sort &show_fields('Foo', fields::PRIVATE)],
+           [sort qw(_no _up_yours)]);
 
 # We should get compile time failures field name typos
 eval q(my Foo $obj = Foo->new; $obj->{notthere} = "");
@@ -102,4 +63,50 @@ foreach (Foo->new) {
     while(my($k,$v) = each %test) {
         ok($obj->{$k} eq $v);
     }
+}
+
+{
+    my $phash;
+    eval { $phash = fields::phash(name => "Joe", rank => "Captain") };
+    if( $Has_PH ) {
+        is( $phash->{rank}, "Captain" );
+    }
+    else {
+        like $@, qr/^Pseudo-hashes have been removed from Perl/;
+    }
+}
+
+
+# check if fields autovivify
+{
+    package Foo::Autoviv;
+    use fields qw(foo bar);
+    sub new { fields::new($_[0]) }
+
+    package main;
+    my Foo::Autoviv $a = Foo::Autoviv->new();
+    $a->{foo} = ['a', 'ok', 'c'];
+    $a->{bar} = { A => 'ok' };
+    is( $a->{foo}[1],    'ok' );
+    is( $a->{bar}->{A},, 'ok' );
+}
+
+package Test::FooBar;
+
+use fields qw(a b c);
+
+sub new {
+    my $self = fields::new(shift);
+    %$self = @_ if @_;
+    $self;
+}
+
+package main;
+
+{
+    my $x = Test::FooBar->new( a => 1, b => 2);
+
+    is(ref $x, 'Test::FooBar', 'x is a Test::FooBar');
+    ok(exists $x->{a}, 'x has a');
+    ok(exists $x->{b}, 'x has b');
 }
