@@ -1,0 +1,37 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 205ce2b0fcd41b77067cfd0bf6f1c310508b89a5 Changes
+SHA1 4f60ae2b2628121e0319e178821538477427d36d MANIFEST
+SHA1 3d3c5339982447cd588a9c00202a16dfa99f8f34 META.yml
+SHA1 62ab17b87932ef0ef25f2679c9aa8d5a379e6ffc Makefile.PL
+SHA1 cbff97b9a39057509b6c5da1901ef6f8102be156 lib/base.pm
+SHA1 e4a198a37e09d730addc49bcaee29849e300bbf9 lib/fields.pm
+SHA1 85240b439ba8413a52272a4c1c8edb5e6a683c02 t/base.t
+SHA1 579e83836513210865fb301a20467c5fe1698853 t/compile-time.t
+SHA1 175dea16b9325762cea401d156e8f440f916fa90 t/fields-5.6.0.t
+SHA1 c32103fd8757d8b112bfa115e32ab5ec59f83172 t/fields-5.8.0.t
+SHA1 59abe1c0d97fdabbc685cca226ba003d0a7935d3 t/fields-base.t
+SHA1 7a4ee278139e5e5900f3cec7971e3a81fd01d59f t/fields.t
+SHA1 6d2d7d6f11408486cb5a97cd0ee8bf3476dd05a2 t/lib/HasSigDie.pm
+SHA1 d320a3e34867bcdea26034cc55e24e974831f81e t/sigdie.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (Darwin)
+
+iD8DBQFGiNRqWMohlhD1QycRAqdQAJ92U5I41SECx1TZSTJTqVahKmgERQCeP5kV
+AcM9W0nLS1YosbCIUECJ8S4=
+=sE02
+-----END PGP SIGNATURE-----

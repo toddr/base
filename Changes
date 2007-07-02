@@ -1,3 +1,29 @@
+2.11  Mon Jul  2 03:30:03 PDT 2007
+    New Features
+    - Inheriting from yourself causes a warning [bleadperl 29090]
+
+    Bug Fixes
+    - Silenced warning when a class with no fields inherits from a class with
+      fields. [bleadperl 22208]
+    - An intermediate class with no fields messes up private fields
+      in the base class. [bleadperl 23266] [bleadperl 23267]
+    * Loading a module via base.pm would mask a global $SIG{__DIE__} in
+      that module. [bleadperl 31163]
+    - A constant named FIELDS in a base class would confuse base.pm
+      [bleadperl 31420]
+
+    Documentation Improvements
+    - Added a DIAGNOSTICS section [bleadperl 22748]
+    - Minor typos [bleadperl 25261]
+    - Better explain how base goes about loading classes.
+    - State explicitly that non-file classes can be based on.
+    - Document that import() is not called.
+
+    Test Fixes
+    - Fix tests for new disallowed hash key access error message in blead.
+
+2.04 through 2.10 were only released with perl.
+
 2.03 Sun Sep 14 20:01:48 PDT 2003
     * phashes produced via fields::new() will now not warn when used for
       forward compatiblity purposes
