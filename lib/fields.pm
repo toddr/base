@@ -3,7 +3,7 @@ package fields;
 require 5.005;
 use strict;
 no strict 'refs';
-unless( eval q{require warnings::register; warnings::register->import} ) {
+unless( eval q{require warnings::register; warnings::register->import; 1} ) {
     *warnings::warnif = sub { 
         require Carp;
         Carp::carp(@_);
@@ -11,7 +11,7 @@ unless( eval q{require warnings::register; warnings::register->import} ) {
 }
 use vars qw(%attr $VERSION);
 
-$VERSION = '2.11';
+$VERSION = '2.12';
 
 # constant.pm is slow
 sub PUBLIC     () { 2**0  }

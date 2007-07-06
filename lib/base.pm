@@ -2,7 +2,7 @@ package base;
 
 use strict 'vars';
 use vars qw($VERSION);
-$VERSION = '2.11';
+$VERSION = '2.12';
 
 # constant.pm is slow
 sub SUCCESS () { 1 }
@@ -135,7 +135,7 @@ sub inherit_fields {
     $dattr->[0] = @$battr;
 
     if( keys %$dfields ) {
-        warn <<'END';
+        warn <<"END";
 $derived is inheriting from $base but already has its own fields!
 This will cause problems.  Be sure you use base BEFORE declaring fields.
 END
@@ -226,6 +226,13 @@ The base class' C<import> method is B<not> called.
 
 base.pm was unable to require the base package, because it was not
 found in your path.
+
+=item Class 'Foo' tried to inherit from itself
+
+Attempting to inherit from yourself generates a warning.
+
+    use Foo;
+    use base 'Foo';
 
 =back
 
