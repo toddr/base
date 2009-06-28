@@ -1,3 +1,12 @@
+2.14
+    - fix problem with SIGDIE on perls < 5.10
+    - Make @INC available in base.pm's error message when
+      a module can't be found. See CPAN bug #28582.
+    - Fix obscure bug introduced in 2.13 (Michael G Schwern)
+
+2.13
+    - push all classes at once in @ISA
+
 2.12  Fri Jul  6 00:57:15 PDT 2007
     Test Features
     - Test that base.pm preserves $VERSION after real module loading.
