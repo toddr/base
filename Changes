@@ -1,3 +1,12 @@
+2.22
+    - [perl #118561] note that the check is fragile and refer to parent.pm
+    - Revamp fields documentation
+    -  mention in perlfunc that ‘my __PACKAGE__’ and ‘my CONSTANT’ work,
+       so that the only mentions are not in perl561delta and Lexical::Types.
+    - make base.pm more strict about nonexistent module check
+    - Fix base.pm nonexistent module check with open files
+    - [perl #121196] only examine the name being included
+
 2.18
     - Backport from bleadperl before 5.16.0 release
     - base no longer sets a module's $VERSION to "-1" when a module it
