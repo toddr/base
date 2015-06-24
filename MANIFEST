@@ -3,9 +3,13 @@ lib/base.pm
 lib/fields.pm
 Makefile.PL
 MANIFEST
+META.json
 META.yml			Module meta-data (added by MakeMaker)
+t/base-open-chunk.t
+t/base-open-line.t
 t/base.t
 t/compile-time.t
+t/core-global.t
 t/fields-5_6_0.t
 t/fields-5_8_0.t
 t/fields-base.t
